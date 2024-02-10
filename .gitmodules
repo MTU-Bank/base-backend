@@ -1,0 +1,3 @@
+[submodule "MTUAuthService"]
+	path = MTUAuthService
+	url = https://github.com/MTU-Bank/auth-service
