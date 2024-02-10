@@ -13,6 +13,7 @@ namespace MTUBankBase.ServiceManager
         public static ServiceRegistry Instance;
 
         public event EventHandler<Service> NewServiceAdded;
+        public event EventHandler<Service> ServiceRemoved;
 
         public List<Service> localServices = new List<Service>();
         public string PairToken = Environment.GetEnvironmentVariable("PairToken");
@@ -45,6 +46,22 @@ namespace MTUBankBase.ServiceManager
 
             // invoke event handlers
             if (NewServiceAdded != null) NewServiceAdded.Invoke(this, service);
+
+            return true;
+        }
+
+        public async Task<bool> UnregisterServiceAsync(Service service)
+        {
+            // if service is online...
+            var onlineStatus = await service.IsOnlineAsync();
+            // we should alarm the service about the disconnect.
+            if (onlineStatus) await service.MessageDisconnect();
+
+            // remove the service from local services registry
+            localServices.Remove(service);
+
+            // invoke event handlers
+            if (ServiceRemoved != null) ServiceRemoved.Invoke(this, service);
 
             return true;
         }

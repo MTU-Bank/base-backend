@@ -8,6 +8,7 @@ namespace MTUBankBase.ServiceManager.Models
 {
     public class RegisterRequest
     {
+        public string Name { get; set; }
         public string BaseUrl { get; set; }
         public string PairToken { get; set; }
     }

@@ -52,6 +52,19 @@ namespace MTUBankBase.ServiceManager
             } catch { return false; }
         }
 
+        public async Task<bool> MessageDisconnect()
+        {
+            try
+            {
+                using (var http = new HttpClient())
+                {
+                    var resp = await http.GetAsync($"{BaseUrl}/disconnectService");
+                    return resp.IsSuccessStatusCode;
+                }
+            }
+            catch { return false; }
+        }
+
         private void CopyFrom(Service service)
         {
             PropertyInfo[] destinationProperties = this.GetType().GetProperties();
