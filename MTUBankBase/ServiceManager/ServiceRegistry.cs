@@ -1,5 +1,6 @@
 ﻿using EmbedIO;
 using EmbedIO.WebApi;
+using MTUBankBase.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace MTUBankBase.ServiceManager
             var server = new WebServer(o => o
                     .WithUrlPrefix(baseUrl)
                     .WithMode(HttpListenerMode.EmbedIO))
-                .WithWebApi("/", m => m
+                .WithWebApi("/", WebControllerMethods.AsJSON, m => m
                     .WithController<ServiceWebController>());
 
             server.Start(cancellationToken);

@@ -9,6 +9,11 @@ namespace MTUBankBase.ServiceManager
     [System.AttributeUsage(System.AttributeTargets.Method)]
     internal class ServiceRouteAttribute : System.Attribute
     {
+        private string ApiUrl { get; set; }
 
+        public ServiceRouteAttribute(string ApiUrl)
+        {
+            this.ApiUrl = ApiUrl;
+        }
     }
 }

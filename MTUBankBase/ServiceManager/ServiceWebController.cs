@@ -8,15 +8,6 @@ namespace MTUBankBase.ServiceManager
 {
     internal class ServiceWebController : WebApiController
     {
-        public static async Task AsJSON(IHttpContext context, object? data)
-        {
-            if (data is null) return;
-
-            context.Response.ContentType = "application/json";
-            using var text = context.OpenResponseText();
-            await text.WriteAsync(JsonConvert.SerializeObject(data)).ConfigureAwait(false);
-        }
-
         [Route(HttpVerbs.Post, "/registerService")]
         public async Task<object> RegisterNewService([JsonData] RegisterRequest registerRequest)
         {
