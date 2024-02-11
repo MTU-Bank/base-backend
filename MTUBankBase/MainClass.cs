@@ -4,6 +4,7 @@ using MTUBankBase.Config;
 using MTUBankBase.Helpers;
 using MTUBankBase.ServiceManager;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace MTUBankBase
 {
@@ -37,8 +38,11 @@ namespace MTUBankBase
             var server = new WebServer(o => o
                     .WithUrlPrefix(baseUrl)
                     .WithMode(HttpListenerMode.EmbedIO))
+                .OnGet("/api/loginUser", RouteController.HandleRoute)
                 .WithWebApi("/", WebControllerMethods.AsJSON, m => m
                     .WithController<BaseAPIController>());
+
+            // test
 
             server.Start(cancellationToken);
         }

@@ -8,7 +8,8 @@ using MTUBankBase.ServiceManager;
 
 namespace MTUBankBase.Auth
 {
-    public interface IAuthProvider
+    [ServiceDefinition(ServiceType.Auth)]
+    public interface IAuthProvider : IServiceDefinition
     {
         [ServiceRoute("/api/registerUser")]
         public AuthResult RegisterUser(RegisterRequest registerRequest);
