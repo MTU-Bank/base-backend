@@ -19,8 +19,69 @@ namespace MTUBankBase
 
         public static async Task HandleRoute(IHttpContext context)
         {
+            var routeContainer = GetRoute(context);
+
+            var service = routeContainer.AssociatedService;
+            if (service is null) throw new HttpException(500, "This service is not currently available.");
+
+            // replicate the request to the service
+            var input = context.Request.InputStream as MemoryStream;
+            var method = context.Request.HttpMethod;
+            var headers = context.Request.Headers;
+            
+            StringContent stringContent = null;
+            StreamContent streamContent = null;
+            if (context.Request.ContentType != "application/octet-stream")
+                stringContent = new StringContent(Encoding.UTF8.GetString(input.ToArray()), Encoding.UTF8, context.Request.ContentType);
+            else
+                streamContent = new StreamContent(input);
+
+            var serviceURL = $"{service.BaseUrl}{routeContainer.MethodName}";
+
+            HttpResponseMessage response = null;
+
+            using (var http = new HttpClient())
+            {
+                // attempt to incorporate all headers
+                var headerList = headers.AllKeys.ToList();
+                foreach (var hKey in headerList)
+                {
+                    try { http.DefaultRequestHeaders.Add(hKey, headers[hKey]); }
+                    catch { }
+                }
+
+                switch (method)
+                {
+                    case "GET":
+                        response = await http.GetAsync(serviceURL);
+                        break;
+                    case "POST":
+                        response = await http.PostAsync(serviceURL, stringContent is null ? streamContent : stringContent);
+                        break;
+                    // TODO implement the rest of methods?
+                }
+            }
+
+            var statusCode = response.StatusCode;
+            var responseStream = await response.Content.ReadAsStreamAsync() as MemoryStream;
+            var responseType = response.Headers.GetValues("Content-Type").FirstOrDefault();
+
+            if (!response.IsSuccessStatusCode) throw new HttpException(statusCode);
+
+            if (responseType != "application/octet-stream")
+                await context.SendStringAsync(Encoding.UTF8.GetString(responseStream.ToArray()), responseType, Encoding.UTF8);
+            else
+                await responseStream.CopyToAsync(context.Response.OutputStream);
+        }
+
+        private static RouteContainer? GetRoute(IHttpContext context)
+        {
+            // get method
             var methodName = GetMethodName(context);
-            await WebControllerMethods.AsJSON(context, methodName);
+
+            // lookup the route
+            var route = Instance.table.FirstOrDefault(z => z.MethodName.Equals(methodName));
+            return route;
         }
 
         private static string GetMethodName(IHttpContext context)

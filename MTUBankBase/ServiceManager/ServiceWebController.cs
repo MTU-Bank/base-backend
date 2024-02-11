@@ -19,6 +19,9 @@ namespace MTUBankBase.ServiceManager
             // register the service
             var result = await ServiceRegistry.Instance.RegisterServiceAsync(service);
 
+            // update the table
+            RouteController.Instance.BuildRouteTable();
+
             if (!result) throw new HttpException(500, "Unknown service pair error.");
             return result;
         }
@@ -32,6 +35,9 @@ namespace MTUBankBase.ServiceManager
             // lookup the service
             var service = ServiceRegistry.Instance.localServices.FirstOrDefault((z) => z.Name.Equals(unregisterRequest.Name));
             if (service is null) return true;
+
+            // update the table
+            RouteController.Instance.BuildRouteTable();
 
             // query the unregister
             var unregQuery = await ServiceRegistry.Instance.UnregisterServiceAsync(service);
