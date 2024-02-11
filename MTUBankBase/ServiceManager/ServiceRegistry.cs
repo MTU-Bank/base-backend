@@ -72,6 +72,37 @@ namespace MTUBankBase.ServiceManager
             return true;
         }
 
+        public static Service? GetAssociatedService(ServiceType serviceType) => Instance.localServices.FirstOrDefault(x => x.ServiceType == serviceType);
+
+        /// <summary>
+        /// Resolves service type based on method name described in service route attribute
+        /// </summary>
+        public static ServiceType? ResolveServiceType(string methodName)
+        {
+            // acquire all service definitions
+            var serviceDefinitions = GetServiceDefinitions();
+
+            // look for the definition with matching method names in methods
+            foreach (var definition in serviceDefinitions)
+            {
+                // get methods for method name
+                var methods = definition.GetMethods()
+                                        .Where(z => {
+                                            var attr = z.GetCustomAttributes(typeof(ServiceRouteAttribute), true).FirstOrDefault();
+                                            return attr is not null && ((ServiceRouteAttribute)attr).ApiUrl.Equals(methodName);
+                                        }).FirstOrDefault();
+
+                if (methods is null) continue;
+
+                // now we assume the method is contained within definition, look for attribute
+                var attribute = definition.GetCustomAttributes(typeof(ServiceDefinitionAttribute), true)
+                                      .FirstOrDefault();
+
+                if (attribute is not null) return ((ServiceDefinitionAttribute)attribute).ServiceType;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Updates cached server definitions for easier route lookup
         /// </summary>

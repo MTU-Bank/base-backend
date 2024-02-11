@@ -35,14 +35,23 @@ namespace MTUBankBase
 
         public static void InitListener(string baseUrl, CancellationToken cancellationToken = default)
         {
+            // build route table
+            var rc = new RouteController();
+            rc.BuildRouteTable();
+
             var server = new WebServer(o => o
                     .WithUrlPrefix(baseUrl)
-                    .WithMode(HttpListenerMode.EmbedIO))
-                .OnGet("/api/loginUser", RouteController.HandleRoute)
-                .WithWebApi("/", WebControllerMethods.AsJSON, m => m
-                    .WithController<BaseAPIController>());
+                    .WithMode(HttpListenerMode.EmbedIO));
 
-            // test
+            // add route table entries
+            foreach (var route in rc.table)
+            {
+                server = server.OnAny(route.MethodName, RouteController.HandleRoute);
+            }
+            
+            // add base API controller
+            server = server.WithWebApi("/", WebControllerMethods.AsJSON, m => m
+                           .WithController<BaseAPIController>());
 
             server.Start(cancellationToken);
         }

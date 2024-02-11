@@ -4,6 +4,7 @@ using MTUBankBase.ServiceManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,11 +12,15 @@ namespace MTUBankBase
 {
     public class RouteController
     {
+        public static RouteController Instance { get; private set; }
+        public RouteController() => Instance = this;
+
+        public List<RouteContainer> table = new List<RouteContainer>();
+
         public static async Task HandleRoute(IHttpContext context)
         {
             var methodName = GetMethodName(context);
-            var serviceType = ResolveServiceType(methodName);
-            await WebControllerMethods.AsJSON(context, serviceType);
+            await WebControllerMethods.AsJSON(context, methodName);
         }
 
         private static string GetMethodName(IHttpContext context)
@@ -26,36 +31,49 @@ namespace MTUBankBase
             return methodName;
         }
 
-        private static ServiceType? ResolveServiceType(string methodName)
+        public void BuildRouteTable()
         {
-            // acquire all service definitions
-            var serviceDefinitions = ServiceRegistry.GetServiceDefinitions();
+            var routeCont = new List<RouteContainer>();
 
-            // look for the definition with matching method names in methods
-            foreach (var definition in serviceDefinitions)
+            // get all service definitions, iterate over definitions
+            var allDefinitions = ServiceRegistry.GetServiceDefinitions();
+            foreach (var definition in allDefinitions)
             {
-                // get methods for method name
-                var methods = definition.GetMethods()
-                                        .Where(z => {
-                                            var attr = z.GetCustomAttributes(typeof(ServiceRouteAttribute), true).FirstOrDefault();
-                                            return attr is not null && ((ServiceRouteAttribute)attr).ApiUrl.Equals(methodName);
-                                        }).FirstOrDefault();
-
-                if (methods is null) continue;
-
-                // now we assume the method is contained within definition, look for attribute
+                // service type
                 var attribute = definition.GetCustomAttributes(typeof(ServiceDefinitionAttribute), true)
                                       .FirstOrDefault();
+                ServiceType serviceType = ((ServiceDefinitionAttribute)attribute).ServiceType;
 
-                if (attribute is not null) return ((ServiceDefinitionAttribute)attribute).ServiceType;
+                // get all methods implemented
+                var methods = definition.GetMethods();
+
+                // for each method, find method name through attribute. Add method to route container
+                foreach (var method in methods)
+                {
+                    var methodAttribute = method.GetCustomAttributes(typeof(ServiceRouteAttribute), true).FirstOrDefault();
+                    if (methodAttribute is null) continue;
+
+                    string methodName = ((ServiceRouteAttribute)methodAttribute).ApiUrl;
+                    // find service associated
+                    var associated = ServiceRegistry.GetAssociatedService(serviceType);
+
+                    // add to the table
+                    var rCont = new RouteContainer();
+                    rCont.MethodName = methodName;
+                    rCont.ServiceDefinition = definition;
+                    rCont.AssociatedService = associated;
+                    routeCont.Add(rCont);
+                }
             }
-            return null;
+
+            this.table = routeCont;
         }
     }
 
     public class RouteContainer
     {
-        public IServiceDefinition ServiceDefinition { get; set; }
-
+        public string MethodName { get; set; }
+        public Type ServiceDefinition { get; set; }
+        public Service? AssociatedService { get; set; }
     }
 }
