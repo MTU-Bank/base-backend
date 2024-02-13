@@ -12,7 +12,7 @@ namespace MTUBankBase.ServiceManager
         public async Task<object> RegisterNewService([JsonData] RegisterRequest registerRequest)
         {
             // confirm token is correct
-            if (!registerRequest.PairToken.Equals(ServiceRegistry.Instance)) throw new HttpException(403, "Pair token does not match.");
+            if (!registerRequest.PairToken.Equals(ServiceRegistry.Instance.PairToken)) throw new HttpException(403, "Pair token does not match.");
 
             // create stub service
             var service = new Service() { BaseUrl = registerRequest.BaseUrl, Name = registerRequest.Name };
@@ -22,7 +22,7 @@ namespace MTUBankBase.ServiceManager
             // update the table
             RouteController.Instance.BuildRouteTable();
 
-            if (!result) throw new HttpException(500, "Unknown service pair error.");
+            if (!result) throw new HttpException(500, "Unknown service pair error (is service up?).");
             return result;
         }
 

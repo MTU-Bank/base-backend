@@ -19,6 +19,6 @@ namespace MTUBankBase.Helpers
             await text.WriteAsync(JsonConvert.SerializeObject(data)).ConfigureAwait(false);
         }
 
-        public static string BindString(string host, int port) => $"http://{host}:{port}/";
+        public static string BindString(string host, int port) => $"http://{host}:{port}";
     }
 }

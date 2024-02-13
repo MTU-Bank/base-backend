@@ -4,6 +4,7 @@ using MTUBankBase.ServiceManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,10 +32,18 @@ namespace MTUBankBase
             
             StringContent stringContent = null;
             StreamContent streamContent = null;
-            if (context.Request.ContentType != "application/octet-stream")
-                stringContent = new StringContent(Encoding.UTF8.GetString(input.ToArray()), Encoding.UTF8, context.Request.ContentType);
-            else
-                streamContent = new StreamContent(input);
+
+            if (input is not null)
+            {
+                string contentType = context.Request.ContentType;
+
+                if (contentType is null) contentType = "application/json";
+
+                if (contentType != "application/octet-stream")
+                    stringContent = new StringContent(Encoding.UTF8.GetString(input.ToArray()), Encoding.UTF8, contentType);
+                else
+                    streamContent = new StreamContent(input);
+            }
 
             var serviceURL = $"{service.BaseUrl}{routeContainer.MethodName}";
 
@@ -63,10 +72,16 @@ namespace MTUBankBase
             }
 
             var statusCode = response.StatusCode;
-            var responseStream = await response.Content.ReadAsStreamAsync() as MemoryStream;
-            var responseType = response.Headers.GetValues("Content-Type").FirstOrDefault();
 
             if (!response.IsSuccessStatusCode) throw new HttpException(statusCode);
+
+            var responseStream = await response.Content.ReadAsStreamAsync() as MemoryStream;
+            string responseType = "application/json";
+            try
+            {
+                responseType = response.Headers.NonValidated["Content-Type"].FirstOrDefault();
+            }
+            catch { }
 
             if (responseType != "application/octet-stream")
                 await context.SendStringAsync(Encoding.UTF8.GetString(responseStream.ToArray()), responseType, Encoding.UTF8);
