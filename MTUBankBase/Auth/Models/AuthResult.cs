@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MTUBankBase.Database.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace MTUBankBase.Auth.Models
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
-    public class AuthResult : UserProfile
+    public class AuthResult : User
     {
         public bool Success { get; set; }
         public string? Error { get; set; }
