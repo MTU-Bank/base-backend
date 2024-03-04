@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MTUBankBase.Auth.Models
 {
-    public class AuthRequest
+    public class Set2FAStatus
     {
-        public string Phone { get; set; }
-        public string Password { get; set; }
+        public bool NewStatus { get; set; }
     }
 }
