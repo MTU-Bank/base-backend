@@ -33,5 +33,15 @@ namespace MTUBankBase.Auth
 
             return JsonConvert.DeserializeObject<Token?>(respText);
         }
+
+        public static bool ValidateServiceAdmin(IHttpContext context)
+        {
+            // get token
+            string? auth = context.Request.Headers.Get("Authorization");
+            if (auth is null) return false;
+
+            // check against current link pwd
+            return MainClass.appConfig.PairToken == auth;
+        }
     }
 }

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTUBankBase", "MTUBankBase\MTUBankBase.csproj", "{EF4C9EEF-228F-4AC7-A75B-F8B9408986F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTUBankBase", "MTUBankBase\MTUBankBase.csproj", "{EF4C9EEF-228F-4AC7-A75B-F8B9408986F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTUAuthService", "MTUAuthService\MTUAuthService.csproj", "{B507AF5F-ACA4-4AE9-B18D-8A0BA205675F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTUAuthService", "MTUAuthService\MTUAuthService.csproj", "{B507AF5F-ACA4-4AE9-B18D-8A0BA205675F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO", "EmbedIO\src\EmbedIO\EmbedIO.csproj", "{13018743-4F26-4F1C-9AA2-5CC74AB5EB41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B507AF5F-ACA4-4AE9-B18D-8A0BA205675F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B507AF5F-ACA4-4AE9-B18D-8A0BA205675F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B507AF5F-ACA4-4AE9-B18D-8A0BA205675F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13018743-4F26-4F1C-9AA2-5CC74AB5EB41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13018743-4F26-4F1C-9AA2-5CC74AB5EB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13018743-4F26-4F1C-9AA2-5CC74AB5EB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13018743-4F26-4F1C-9AA2-5CC74AB5EB41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
