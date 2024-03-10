@@ -20,10 +20,6 @@ namespace MTUBankBase.Database.Models
         [JsonIgnore]
         public string OwnerId { get; set; }
 
-        [ForeignKey(nameof(OwnerId))]
-        [JsonIgnore]
-        public User User { get; set; }
-
         [Column("currency", TypeName = "VARCHAR(32)")]
         public AccountCurrency AccountCurrency { get; set; }
 
@@ -35,6 +31,10 @@ namespace MTUBankBase.Database.Models
 
         [Column("systemLocked")]
         public bool SystemLocked { get; set; }
+
+        // navigational properties
+        [JsonIgnore]
+        public virtual User User { get; set; }
     }
 
     public enum AccountCurrency

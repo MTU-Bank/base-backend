@@ -17,21 +17,27 @@ namespace MTUBankBase.Auth
 
         public static async Task<Token?> GetCurrentToken(IHttpContext context)
         {
+            /*
             // get token
             string? auth = context.Request.Headers.Get("Authorization");
 
             if (auth is null) return null;
 
+            string token = auth.Split(' ').LastOrDefault();
+
             // question the server
             var service = ServiceRegistry.GetAssociatedService(ServiceType.Auth);
             var internalUrl = $"{service.BaseUrl}/api/internal/checkToken";
-            var msg = new CheckTokenRequest() { Token = auth };
+            var msg = new CheckTokenRequest() { Token = token };
             var json = new StringContent(JsonConvert.SerializeObject(msg), Encoding.UTF8, "application/json");
 
             var resp = await validatorHttp.PostAsync(internalUrl, json);
             var respText = await resp.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<Token?>(respText);
+            return JsonConvert.DeserializeObject<Token?>(respText);*/
+
+            // scrap this idea for now... we movin' to JWT tokens
+            return null;
         }
 
         public static bool ValidateServiceAdmin(IHttpContext context)

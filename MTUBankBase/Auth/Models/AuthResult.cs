@@ -1,5 +1,6 @@
 ﻿using MTUBankBase.Database.Models;
 using Newtonsoft.Json;
+using Swan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,10 @@ namespace MTUBankBase.Auth.Models
         public bool Success { get; set; }
         public string? Error { get; set; }
         public string? Token { get; set; }
-        public bool TwoFARequired { get; set; }
+        public bool? TwoFARequired { get; set; }
         public string? TwoFAToken { get; set; }
+
+        public AuthResult() { }
+        public AuthResult(User u) => u.CopyOnlyPropertiesTo(this);
     }
 }

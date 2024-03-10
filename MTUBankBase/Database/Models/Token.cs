@@ -19,10 +19,6 @@ namespace MTUBankBase.Database.Models
         [Column("owner")]
         public string OwnerId { get; set; }
 
-        [ForeignKey(nameof(OwnerId))]
-        [JsonIgnore]
-        public User Owner { get; set; }
-
         [Column("type")]
         public TokenType TokenType { get; set; }
 
@@ -31,6 +27,10 @@ namespace MTUBankBase.Database.Models
 
         [JsonIgnore]
         public bool IsAuthed { get => TokenType == TokenType.Active && (DateTime.Now - CreationDate) <= TimeSpan.FromHours(4); }
+
+        // navigational properties
+        [JsonIgnore]
+        public User Owner { get; set; }
     }
 
     public enum TokenType

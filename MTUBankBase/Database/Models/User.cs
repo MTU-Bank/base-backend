@@ -35,7 +35,7 @@ namespace MTUBankBase.Database.Models
         public string PhoneNum { get; set; }
 
         [Column("sex", TypeName = "varchar(8)")]
-        public UserSex Sex { get; set; }
+        public UserSex? Sex { get; set; }
 
         [Column("pwd")]
         [JsonIgnore]
