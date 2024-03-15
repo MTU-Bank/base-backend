@@ -1,6 +1,4 @@
-﻿using EmbedIO;
-using MTUBankBase.Helpers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,8 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Swan;
 
-namespace MTUBankBase.Database.Models
+namespace MTUModelContainer.Database.Models
 {
     [Table("users")]
     public class User

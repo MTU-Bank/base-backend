@@ -15,10 +15,12 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbedIO\src\EmbedIO\EmbedIO.csproj" />
+    <ProjectReference Include="..\MTUModelContainer\MTUModelContainer.csproj" />
   </ItemGroup>
 
 </Project>

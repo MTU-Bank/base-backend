@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTUBankBase.Auth.Models
+namespace MTUModelContainer.Auth.Models
 {
     public class AuthRequest
     {

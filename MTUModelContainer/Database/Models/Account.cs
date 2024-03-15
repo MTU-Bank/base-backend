@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MTUBankBase.Database.Models
+namespace MTUModelContainer.Database.Models
 {
     [Table("accounts")]
     public class Account

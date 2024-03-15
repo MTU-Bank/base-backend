@@ -1,9 +1,11 @@
 ﻿using EmbedIO;
 using EmbedIO.WebApi;
+using Microsoft.IdentityModel.Tokens;
 using MTUBankBase.Config;
 using MTUBankBase.Helpers;
 using MTUBankBase.ServiceManager;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace MTUBankBase

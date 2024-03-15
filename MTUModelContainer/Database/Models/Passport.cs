@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTUBankBase.Database.Models
+namespace MTUModelContainer.Database.Models
 {
     [Table("passports")]
     public class Passport

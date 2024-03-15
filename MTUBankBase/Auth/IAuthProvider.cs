@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MTUBankBase.Auth.Models;
-using MTUBankBase.Database.Models;
+using MTUModelContainer.Auth.Models;
+using MTUModelContainer.Database.Models;
 using MTUBankBase.ServiceManager;
 
 namespace MTUBankBase.Auth
@@ -24,9 +24,5 @@ namespace MTUBankBase.Auth
 
         [ServiceRoute("/api/set2FA")]
         public AuthResult Set2FAStatus(Set2FAStatus new2faStatus);
-
-        // internal (interservice) communication API methods
-        [ServiceRoute("/api/internal/checkToken")]
-        public Token? CheckToken(CheckTokenRequest token);
     }
 }
