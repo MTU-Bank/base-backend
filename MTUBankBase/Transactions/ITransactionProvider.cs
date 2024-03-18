@@ -8,5 +8,41 @@ using System.Threading.Tasks;
 
 namespace MTUBankBase.Transactions
 {
-    
+    [ServiceDefinition(ServiceType.Auth)]
+    public interface ITransactionProvider : IServiceDefinition
+    {
+        [ServiceRoute("/api/listAccounts")]
+        [RequiresAuth]
+        public AccountListResponse ListAccounts();
+
+        [ServiceRoute("/api/createAccount")]
+        [RequiresAuth]
+        public UserAccount CreateAccount(AccountCreationRequest accountCreation);
+
+        [ServiceRoute("/api/deleteAccount")]
+        [RequiresAuth]
+        public SuccessResponse DeleteAccount(AccountDeleteRequest accountDelete);
+
+        [ServiceRoute("/api/getAccount")]
+        [RequiresAuth]
+        public UserAccount GetAccount(AccountRequest account);
+
+        [ServiceRoute("/api/blockAccount")]
+        [RequiresAuth]
+        public SuccessResponse BlockAccount(AccountBlockRequest account);
+
+        // returns true if there is a default account you can transfer to by phone num
+        // otherwise, false
+        [ServiceRoute("/api/lookupAccount")]
+        [RequiresAuth]
+        public SuccessResponse LookupAccount(AccountLookupRequest lookupRequest);
+
+        [ServiceRoute("/api/transferFunds")]
+        [RequiresAuth]
+        public SuccessResponse TransferFunds(TransactionRequest tx);
+
+        [ServiceRoute("/api/setAsDefault")]
+        [RequiresAuth]
+        public SuccessResponse SetAsDefaultAccount(SetAsDefaultAccountRequest accountRequest);
+    }
 }

@@ -12,7 +12,6 @@ namespace MTUBankBase.Auth
     [ServiceDefinition(ServiceType.Auth)]
     public interface IAuthProvider : IServiceDefinition
     {
-        // public service API methods
         [ServiceRoute("/api/registerUser")]
         public AuthResult RegisterUser(RegisterRequest registerRequest);
 
