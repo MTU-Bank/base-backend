@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTUBankBase.Auth.Models
+namespace MTUModelContainer.Auth.Models
 {
     public class TwoFARequest
     {
-        public string TwoFAToken { get; set; }
         public string TwoFAValue { get; set; }
     }
 }

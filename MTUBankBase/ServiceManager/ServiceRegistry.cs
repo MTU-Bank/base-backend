@@ -19,7 +19,7 @@ namespace MTUBankBase.ServiceManager
         public event EventHandler<Service> ServiceRemoved;
 
         public List<Service> localServices = new List<Service>();
-        public string PairToken = Environment.GetEnvironmentVariable("PairToken");
+        public string PairToken = MainClass.appConfig.PairToken;
         private List<Type> serviceDefinitions = new List<Type>();
 
         public void InitListener(string baseUrl, CancellationToken cancellationToken = default)

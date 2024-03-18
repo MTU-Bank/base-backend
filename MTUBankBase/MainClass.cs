@@ -1,9 +1,12 @@
 ﻿using EmbedIO;
 using EmbedIO.WebApi;
+using Microsoft.IdentityModel.Tokens;
 using MTUBankBase.Config;
 using MTUBankBase.Helpers;
 using MTUBankBase.ServiceManager;
+using MTUModelContainer;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace MTUBankBase
@@ -35,13 +38,16 @@ namespace MTUBankBase
 
         public static void InitListener(string baseUrl, CancellationToken cancellationToken = default)
         {
+            // set up JwtService
+            var jwtService = new JwtService("MTUBank", JwtKeyGenerator.GetSecurityKey(appConfig.PairToken));
+
             // build route table
             var rc = new RouteController();
             rc.BuildRouteTable();
 
             var server = new WebServer(o => o
                     .WithUrlPrefix(baseUrl)
-                    .WithMode(HttpListenerMode.EmbedIO));
+                    .WithMode(HttpListenerMode.EmbedIO), jwtService);
 
             // add route table entries
             foreach (var route in rc.table)

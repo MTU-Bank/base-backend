@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EmbedIO.WebApi;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace MTUBankBase.ServiceManager
     public enum ServiceType
     {
         [EnumMember(Value = "Auth")]
-        Auth
+        Auth,
+        [EnumMember(Value = "Transaction")]
+        Transaction,
     }
 
     public class Service
@@ -24,6 +27,13 @@ namespace MTUBankBase.ServiceManager
         public string BaseUrl { get; set; }
 
         public ServiceType ServiceType { get; set; }
+
+        public Service() { }
+
+        public Service(object stub)
+        {
+            this.CopyFrom(stub);
+        }
 
         public async Task<bool> IsOnlineAsync()
         {
@@ -44,8 +54,10 @@ namespace MTUBankBase.ServiceManager
                 using (var http = new HttpClient())
                 {
                     var resp = await http.GetAsync($"{BaseUrl}/getServiceInfo");
+                    if (!resp.IsSuccessStatusCode) throw new Exception("Service response incorrect.");
                     var jsonStr = await resp.Content.ReadAsStringAsync();
                     var serviceInfo = JsonConvert.DeserializeObject<Service>(jsonStr);
+                    if (serviceInfo is null) throw new Exception("Service response incorrect.");
                     this.CopyFrom(serviceInfo);
                     return true;
                 }
@@ -65,13 +77,13 @@ namespace MTUBankBase.ServiceManager
             catch { return false; }
         }
 
-        private void CopyFrom(Service service)
+        private void CopyFrom(object service)
         {
             PropertyInfo[] destinationProperties = this.GetType().GetProperties();
             foreach (PropertyInfo destinationPi in destinationProperties)
             {
                 PropertyInfo sourcePi = service.GetType().GetProperty(destinationPi.Name);
-                if (sourcePi.CanWrite) destinationPi.SetValue(this, sourcePi.GetValue(service, null), null);
+                if (destinationPi.CanWrite) destinationPi.SetValue(this, sourcePi.GetValue(service, null), null);
             }
         }
     }
