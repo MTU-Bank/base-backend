@@ -23,6 +23,7 @@ namespace MTUBankBase.Auth
         public AuthResult Submit2FA(TwoFARequest twoFA);
 
         [ServiceRoute("/api/set2FA")]
+        [RequiresAuth]
         public AuthResult Set2FAStatus(Set2FAStatus new2faStatus);
     }
 }

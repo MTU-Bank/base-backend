@@ -15,7 +15,9 @@ namespace MTUBankBase.ServiceManager
     public enum ServiceType
     {
         [EnumMember(Value = "Auth")]
-        Auth
+        Auth,
+        [EnumMember(Value = "Transaction")]
+        Transaction,
     }
 
     public class Service

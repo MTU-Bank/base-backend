@@ -29,8 +29,14 @@ namespace MTUBankBase
         {
             var routeContainer = GetRoute(context);
 
+            // check for auth
+            if ((context.CurrentClaims is null ||
+                context.CurrentClaims.Claims.Any((z) => z.Type == "type" && z.Value != "Active")) 
+                && routeContainer.RequiresAuth) 
+                throw new HttpException(HttpStatusCode.Unauthorized, "Only authorized users can access this method.");
+
             var service = routeContainer.AssociatedService;
-            if (service is null) throw new HttpException(500, "This service is not currently available.");
+            if (service is null) throw new HttpException(HttpStatusCode.InternalServerError, "This service is not currently available.");
 
             // replicate the request to the service
             var input = context.Request.InputStream;
@@ -170,6 +176,10 @@ namespace MTUBankBase
                     // check if parameter-less (no model on input)
                     if (inputParams.Count != 0) inputModel = inputParams[0].ParameterType;
 
+                    // check if method requires auth
+                    var authAttr = method.GetCustomAttributes(typeof(RequiresAuthAttribute), true).FirstOrDefault();
+                    bool requiresAuth = authAttr is not null;
+
                     // add to the table
                     var rCont = new RouteContainer();
                     rCont.MethodName = methodName;
@@ -177,6 +187,7 @@ namespace MTUBankBase
                     rCont.AssociatedService = associated;
                     rCont.InputModel = inputModel;
                     rCont.OutputModel = method.ReturnType;
+                    rCont.RequiresAuth = requiresAuth;
                     routeCont.Add(rCont);
                 }
             }
@@ -193,5 +204,7 @@ namespace MTUBankBase
 
         public Type? InputModel { get; set; }
         public Type OutputModel { get; set; }
+
+        public bool RequiresAuth { get; set; }
     }
 }
