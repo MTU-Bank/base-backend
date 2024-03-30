@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MTUBankBase.Transactions
 {
-    [ServiceDefinition(ServiceType.Auth)]
+    [ServiceDefinition(ServiceType.Transaction)]
     public interface ITransactionProvider : IServiceDefinition
     {
         [ServiceRoute("/api/listAccounts")]
