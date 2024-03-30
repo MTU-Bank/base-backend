@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTUBankBase.ServiceManager.Models
+namespace MTUModelContainer.ServiceManager.Models
 {
     public class RegisterRequest
     {

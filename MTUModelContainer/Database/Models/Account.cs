@@ -18,12 +18,17 @@ namespace MTUModelContainer.Database.Models
 
         [Column("owner_id")]
         [JsonIgnore]
+        [GetOnlyJsonProperty]
         public string OwnerId { get; set; }
+
+        [Column("name")]
+        public string FriendlyName { get; set; }
 
         [Column("currency", TypeName = "VARCHAR(32)")]
         public AccountCurrency AccountCurrency { get; set; }
 
         [Column("creationDate")]
+        [GetOnlyJsonProperty]
         public DateTime CreationDate { get; set; }
 
         [Column("userLocked")]
@@ -32,8 +37,12 @@ namespace MTUModelContainer.Database.Models
         [Column("systemLocked")]
         public bool SystemLocked { get; set; }
 
+        [Column("balance")]
+        public long Balance { get; set; }
+
         // navigational properties
         [JsonIgnore]
+        [GetOnlyJsonProperty]
         public virtual User User { get; set; }
     }
 

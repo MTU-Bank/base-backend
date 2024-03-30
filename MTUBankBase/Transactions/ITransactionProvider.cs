@@ -1,5 +1,7 @@
 ﻿using MTUBankBase.ServiceManager;
 using MTUModelContainer.Auth.Models;
+using MTUModelContainer.SharedModels;
+using MTUModelContainer.Transactions.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +19,19 @@ namespace MTUBankBase.Transactions
 
         [ServiceRoute("/api/createAccount")]
         [RequiresAuth]
-        public UserAccount CreateAccount(AccountCreationRequest accountCreation);
+        public TxAccount? CreateAccount(AccountCreationRequest accountCreation);
 
         [ServiceRoute("/api/deleteAccount")]
         [RequiresAuth]
-        public SuccessResponse DeleteAccount(AccountDeleteRequest accountDelete);
+        public SuccessResponse DeleteAccount(AccountRequest accountDelete);
 
         [ServiceRoute("/api/getAccount")]
         [RequiresAuth]
-        public UserAccount GetAccount(AccountRequest account);
+        public TxAccount? GetAccount(AccountRequest account);
 
         [ServiceRoute("/api/blockAccount")]
         [RequiresAuth]
-        public SuccessResponse BlockAccount(AccountBlockRequest account);
+        public SuccessResponse BlockAccount(AccountRequest account);
 
         // returns true if there is a default account you can transfer to by phone num
         // otherwise, false
@@ -43,6 +45,6 @@ namespace MTUBankBase.Transactions
 
         [ServiceRoute("/api/setAsDefault")]
         [RequiresAuth]
-        public SuccessResponse SetAsDefaultAccount(SetAsDefaultAccountRequest accountRequest);
+        public SuccessResponse SetAsDefaultAccount(AccountRequest accountRequest);
     }
 }
