@@ -47,7 +47,8 @@ namespace MTUBankBase
 
             var server = new WebServer(o => o
                     .WithUrlPrefix(baseUrl)
-                    .WithMode(HttpListenerMode.EmbedIO), jwtService);
+                    .WithMode(HttpListenerMode.EmbedIO), jwtService)
+                    .WithCors();
 
             // add route table entries
             foreach (var route in rc.table)
