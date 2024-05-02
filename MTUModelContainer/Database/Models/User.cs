@@ -46,6 +46,24 @@ namespace MTUModelContainer.Database.Models
         [GetOnlyJsonProperty]
         public DateTime CreationDate { get; set; }
 
+        [Column("phoneVerif")]
+        [GetOnlyJsonProperty]
+        public bool PhoneVerified { get; set; } = false;
+
+        [Column("phoneVerifCode")]
+        [JsonIgnore]
+        [GetOnlyJsonProperty]
+        public string? PhoneVerificationCode { get; set; }
+
+        [Column("emailVerif")]
+        [GetOnlyJsonProperty]
+        public bool EmailVerified { get; set; } = false;
+
+        [Column("emailVerifCode")]
+        [JsonIgnore]
+        [GetOnlyJsonProperty]
+        public string? EmailVerificationCode { get; set; }
+
         [Column("verified")]
         [JsonIgnore]
         [GetOnlyJsonProperty]
@@ -56,7 +74,6 @@ namespace MTUModelContainer.Database.Models
         [GetOnlyJsonProperty]
         public string? TwoFASecret { get; set; }
 
-        [ForeignKey(nameof(Account.OwnerId))]
         [GetOnlyJsonProperty]
         public ICollection<Account> Accounts { get; set; }
     }

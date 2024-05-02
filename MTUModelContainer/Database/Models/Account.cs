@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MTUModelContainer.Database.Models
@@ -40,10 +40,10 @@ namespace MTUModelContainer.Database.Models
         [Column("balance")]
         public long Balance { get; set; }
 
-        // navigational properties
+        // navigation properties
         [JsonIgnore]
         [GetOnlyJsonProperty]
-        public virtual User User { get; set; }
+        public User User { get; set; }
     }
 
     public enum AccountCurrency
