@@ -27,6 +27,12 @@ namespace MTUBankBase
 
         public static async Task HandleRoute(IHttpContext context)
         {
+            if (context.Request.HttpMethod == "OPTIONS")
+            {
+                await context.SendStringAsync("{}", "application/json", Encoding.UTF8);
+                return;
+            }
+
             var routeContainer = GetRoute(context);
 
             // check for auth
