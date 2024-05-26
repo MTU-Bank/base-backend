@@ -2,7 +2,7 @@
 using EmbedIO;
 using EmbedIO.WebApi;
 using Newtonsoft.Json;
-using MTUBankBase.ServiceManager.Models;
+using MTUModelContainer.ServiceManager.Models;
 
 namespace MTUBankBase.ServiceManager
 {

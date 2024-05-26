@@ -12,12 +12,15 @@ namespace MTUBankBase.Auth
     [ServiceDefinition(ServiceType.Auth)]
     public interface IAuthProvider : IServiceDefinition
     {
-        // public service API methods
         [ServiceRoute("/api/registerUser")]
         public AuthResult RegisterUser(RegisterRequest registerRequest);
 
         [ServiceRoute("/api/loginUser")]
         public AuthResult LoginUser(AuthRequest authRequest);
+
+        [ServiceRoute("/api/getCurrentUser")]
+        [RequiresAuth]
+        public User GetCurrentUser();
 
         [ServiceRoute("/api/2FA")]
         public AuthResult Submit2FA(TwoFARequest twoFA);
@@ -25,5 +28,17 @@ namespace MTUBankBase.Auth
         [ServiceRoute("/api/set2FA")]
         [RequiresAuth]
         public AuthResult Set2FAStatus(Set2FAStatus new2faStatus);
+
+        [ServiceRoute("/api/requestEmailVerif")]
+        public AuthResult RequestEmailVerification();
+
+        [ServiceRoute("/api/confirmEmail")]
+        public AuthResult ConfirmEmail(ConfirmStuffRequest emailConfirm);
+
+        [ServiceRoute("/api/requestPhoneVerif")]
+        public AuthResult RequestPhoneVerification();
+
+        [ServiceRoute("/api/confirmPhone")]
+        public AuthResult ConfirmPhone(ConfirmStuffRequest emailConfirm);
     }
 }

@@ -4,3 +4,6 @@
 [submodule "EmbedIO"]
 	path = EmbedIO
 	url = https://github.com/MTU-Bank/EmbedIO.git
+[submodule "MTUTxService"]
+	path = MTUTxService
+	url = https://github.com/MTU-Bank/tx-service.git

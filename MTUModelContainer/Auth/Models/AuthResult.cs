@@ -1,4 +1,5 @@
 ﻿using MTUModelContainer.Database.Models;
+using MTUModelContainer.Interfaces;
 using Newtonsoft.Json;
 using Swan;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace MTUModelContainer.Auth.Models
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
-    public class AuthResult : User
+    public class AuthResult : User, ISuccessResponse
     {
         public bool Success { get; set; }
         public string? Error { get; set; }

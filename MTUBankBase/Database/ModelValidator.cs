@@ -38,12 +38,7 @@ namespace MTUBankBase.Database
                 if (attr is not null) flag = true;
 
                 // check if base class has the attribute
-                if (classAttr is null) flag = true;
-                else
-                {
-                    attr = prop.GetCustomAttribute(typeof(GetOnlyJsonPropertyAttribute));
-                    if (attr is null) flag = true;
-                }
+                if (classAttr is null && prop.GetCustomAttribute(typeof(GetOnlyJsonPropertyAttribute)) is null) flag = true;
 
                 if (flag) throw new HttpException(System.Net.HttpStatusCode.BadRequest, $"Property [{prop.Name}] is null, a value was expected.");
             }

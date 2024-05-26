@@ -8,10 +8,10 @@ namespace MTUBankBase.Config
 {
     public class ApplicationConfig : ConfigBase<ApplicationConfig>
     {
-        public string BaseAPIHost { get; set; } = "127.0.0.1";
+        public string BaseAPIHost { get; set; } = "*";
         public int BaseAPIPort { get; set; } = 80;
 
-        public string ServiceManagerHost { get; set; } = "127.0.0.1";
+        public string ServiceManagerHost { get; set; } = "*";
         public int ServiceManagerPort { get; set; } = 8090;
         public string PairToken { get; set; } = "testToken";
 
