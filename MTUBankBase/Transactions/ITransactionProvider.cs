@@ -1,5 +1,6 @@
 ﻿using MTUBankBase.ServiceManager;
 using MTUModelContainer.Auth.Models;
+using MTUModelContainer.Database.Models;
 using MTUModelContainer.SharedModels;
 using MTUModelContainer.Transactions.Models;
 using System;
@@ -19,7 +20,7 @@ namespace MTUBankBase.Transactions
 
         [ServiceRoute("/api/createAccount")]
         [RequiresAuth]
-        public TxAccount? CreateAccount(AccountCreationRequest accountCreation);
+        public AccountResponse CreateAccount(AccountCreationRequest accountCreation);
 
         [ServiceRoute("/api/deleteAccount")]
         [RequiresAuth]
@@ -27,7 +28,7 @@ namespace MTUBankBase.Transactions
 
         [ServiceRoute("/api/getAccount")]
         [RequiresAuth]
-        public TxAccount? GetAccount(AccountRequest account);
+        public AccountResponse GetAccount(AccountRequest account);
 
         [ServiceRoute("/api/blockAccount")]
         [RequiresAuth]

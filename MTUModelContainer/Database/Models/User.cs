@@ -73,9 +73,6 @@ namespace MTUModelContainer.Database.Models
         [JsonIgnore]
         [GetOnlyJsonProperty]
         public string? TwoFASecret { get; set; }
-
-        [GetOnlyJsonProperty]
-        public ICollection<Account> Accounts { get; set; }
     }
 
     public enum UserSex

@@ -40,10 +40,8 @@ namespace MTUModelContainer.Database.Models
         [Column("balance")]
         public long Balance { get; set; }
 
-        // navigation properties
-        [JsonIgnore]
-        [GetOnlyJsonProperty]
-        public User User { get; set; }
+        [Column("defaultAccount")]
+        public bool IsDefault { get; set; } = false;
     }
 
     public enum AccountCurrency

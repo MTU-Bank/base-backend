@@ -10,8 +10,7 @@ namespace MTUModelContainer.Transactions.Models
     {
         public string FromAccount { get; set; }
         public bool IsDirectAccountTx { get; set; }
-        public string? ToAccount { get; set; }
-        public string? ToPhoneNum { get; set; }
+        public string? ToWhoever { get; set; }
 
         public long Amount { get; set; }
     }
