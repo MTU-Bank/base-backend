@@ -1,0 +1,338 @@
+openapi: 3.0.0
+info:
+  title: MTUBank - The complete API documentation
+  description: |-
+    MTUBank documentation for AuthService, TXService and ServiceManager. You will also find ServiceStub API - those methods must be implemented by ALL services.
+  termsOfService: https://nk.ax/
+  contact:
+    email: a@nk.ax
+  license:
+    name: GNU Affero General Public License v3.0
+    url: https://github.com/MTU-Bank/base-backend/blob/master/LICENSE
+  version: "0.1"
+servers:
+  - url: https://mtu.nk.ax/api/
+  - url: https://mtu_srv.nk.ax/api/
+tags:
+  - name: ServiceManager
+    description: Everything that manages the service registration and unregistration - please use mtu_srv endpoint for this!!!
+    externalDocs:
+      description: Find out more about ServiceManager
+      url: https://github.com/MTU-Bank/base-backend/tree/master/MTUBankBase/ServiceManager
+  - name: AuthService
+    description: Everything that manages the process of authentification and authorization, the core of JWT management
+    externalDocs:
+      description: Find out more about AuthService
+      url: https://github.com/MTU-Bank/auth-service
+  - name: TXService
+    description: Everything that manages transactions between users
+    externalDocs:
+      description: Find out more about TXService
+      url: https://github.com/MTU-Bank/tx-service
+  - name: ServiceStub
+    description: All services MUST implement these methods, as described in the documentation
+    externalDocs:
+      description: Find out more about ServiceStub
+      url: https://github.com/MTU-Bank/base-backend/blob/master/MTUBankBase/ServiceManager/Service.cs
+
+
+paths:
+  /registerService:
+    post:
+      tags:
+        - ServiceManager
+      summary: Register a service
+      description: Registers a service to be used by MTUBank for requests
+      operationId: registerService
+      requestBody:
+        description: Define the service stub to register
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SMRegisterRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+  /unregisterService:
+    post:
+      tags:
+        - ServiceManager
+      summary: Unregister a service
+      description: Unregisters a service so it's no longer used by MTUBank for requests
+      operationId: unregisterService
+      requestBody:
+        description: Define the service stub to unregister
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnregisterRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          
+  /getServiceInfo:
+    get:
+      tags:
+        - ServiceStub
+      summary: Gets information about the service
+      description: Returns detailed information about the service for the core to keep track of
+      operationId: getServiceInfo
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+  /getStatus:
+    get:
+      tags:
+        - ServiceStub
+      summary: Get status of the service
+      description: Returns whether or not the service is online and ready to process requests
+      operationId: getStatus
+      responses:
+        '200':
+          description: Successful operation
+  /disconnectService:
+    get:
+      tags:
+        - ServiceStub
+      summary: Disconnects the service
+      description: Disconnects the service
+      operationId: disconnectService
+      responses:
+        '200':
+          description: Successful operation
+          
+  /registerUser:
+    post:
+      tags:
+        - AuthService
+      summary: Register a user
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
+  /loginUser:
+    post:
+      tags:
+        - AuthService
+      summary: Login a user
+      operationId: loginUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
+  /getCurrentUser:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - AuthService
+      summary: Get current user by token
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /2FA:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - AuthService
+      summary: Submit 2FA
+      operationId: 2FA
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwoFARequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
+  /set2FA:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - AuthService
+      summary: Set 2FA status
+      operationId: set2FA
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Set2FAStatus'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
+                
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # optional, for documentation purposes only
+
+  schemas:
+    SMRegisterRequest:
+      type: object
+      properties:
+        Name:
+          type: string
+        BaseUrl:
+          type: string
+        PairToken:
+          type: string
+
+    UnregisterRequest:
+      type: object
+      properties:
+        Name:
+          type: string
+        BaseUrl:
+          type: string
+        PairToken:
+          type: string
+          
+    RegisterRequest:
+      type: object
+      properties:
+        Password:
+          type: string
+        FirstName:
+          type: string
+        MiddleName:
+          type: string
+        LastName:
+          type: string
+        Email:
+          type: string
+        PhoneNum:
+          type: string
+        Sex:
+          type: string
+
+    AuthResult:
+      type: object
+      properties:
+        Success:
+          type: boolean
+        Error:
+          type: string
+        Token:
+          type: string
+        TwoFARequired:
+          type: boolean
+        TwoFAToken:
+          type: string
+        Id:
+          type: string
+        FirstName:
+          type: string
+        MiddleName:
+          type: string
+        LastName:
+          type: string
+        Email:
+          type: string
+        PhoneNum:
+          type: string
+        Sex:
+          type: number
+        PhoneVerified:
+          type: boolean
+        EmailVerified:
+          type: boolean
+
+    AuthRequest:
+      type: object
+      properties:
+        Phone:
+          type: string
+        Password:
+          type: string
+    
+    Service:
+      type: object
+      properties:
+        Name:
+          type: string
+        Description:
+          type: string
+        ServiceType:
+          type: string
+        BaseUrl:
+          type: string
+
+
+    User:
+      type: object
+      properties:
+        Id:
+          type: string
+        FirstName:
+          type: string
+        MiddleName:
+          type: string
+        LastName:
+          type: string
+        Email:
+          type: string
+        PhoneNum:
+          type: string
+        Sex:
+          type: number
+        PhoneVerified:
+          type: boolean
+        EmailVerified:
+          type: boolean
+
+    TwoFARequest:
+      type: object
+      properties:
+        TwoFAValue:
+          type: string
+          
+    Set2FAStatus:
+      type: object
+      properties:
+        NewStatus:
+          type: boolean
+        
