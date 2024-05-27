@@ -12,10 +12,10 @@ info:
   version: "0.1"
 servers:
   - url: https://mtu.nk.ax/api/
-  - url: https://mtu_srv.nk.ax/api/
+  - url: https://mtu.nk.ax/srv/
 tags:
   - name: ServiceManager
-    description: Everything that manages the service registration and unregistration - please use mtu_srv endpoint for this!!!
+    description: Everything that manages the service registration and unregistration - please use 'srv' endpoint for this!!!
     externalDocs:
       description: Find out more about ServiceManager
       url: https://github.com/MTU-Bank/base-backend/tree/master/MTUBankBase/ServiceManager
