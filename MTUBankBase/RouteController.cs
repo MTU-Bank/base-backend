@@ -130,6 +130,7 @@ namespace MTUBankBase
                 await context.SendStringAsync(Encoding.UTF8.GetString(newResp.ToArray()), responseType, Encoding.UTF8);
             else
                 await newResp.CopyToAsync(context.Response.OutputStream);
+            context.Response.Close();
         }
 
         private static RouteContainer? GetRoute(IHttpContext context)
