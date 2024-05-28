@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  core:
+    build:
+      context: .
+      dockerfile: ./base-backend/Dockerfile
+    container_name: core_container
+    ports:
+      - "80:80"
+      - "8090:8090"
+    networks:
+      - core_network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: ./auth-service/Dockerfile
+    container_name: microservice_container
+    ports:
+      - "8081:80"
+    networks:
+      - core_network
+    depends_on:
+      - core
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - CORE_URL=http://core:80
+
+networks:
+  core_network:
+    driver: bridge
